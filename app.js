@@ -2,12 +2,15 @@ require('dotenv').config()
 
 const createError = require('http-errors');
 const express = require('express');
+const passport = require('passport');
 
 const { logger } = require('./utils');
 const { connect } = require('./models');
 const router = require('./routes');
 
 const app = express();
+
+app.use(passport.initialize());
 
 // configurando formatos de parâmetros
 app.use(express.json());
