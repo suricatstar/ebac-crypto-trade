@@ -2,7 +2,7 @@ const express = require('express');
 
 const { logger } = require('../../utils');
 
-const { checaSaldo } = require('../../services');
+const { checaSaldo, cancelaDeposito } = require('../../services');
 
 const router = express.Router();
 
@@ -28,6 +28,30 @@ router.post('/', async (req, res) => {
         });
     } catch (e) {
         logger.error(`erro no depósito: ${e.message}`);
+
+        res.status(422).json({
+            sucesso: false,
+            mensagem: e.message,
+        });
+    }
+});
+
+// Nova rota para cancelar depósito
+router.delete('/:depositoId', async (req, res) => {
+    const usuario = req.user;
+    const { depositoId } = req.params;
+
+    try {
+        const resultado = await cancelaDeposito(usuario, depositoId);
+        
+        res.json({
+            sucesso: true,
+            mensagem: resultado.mensagem,
+            saldo: await checaSaldo(usuario),
+            deposito: resultado.deposito
+        });
+    } catch (e) {
+        logger.error(`Erro ao cancelar depósito: ${e.message}`);
 
         res.status(422).json({
             sucesso: false,
