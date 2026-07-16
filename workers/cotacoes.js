@@ -2,8 +2,9 @@ const {Cotacao} = require('../models');
 const { buscaCotacoesOnline } = require('../services');
 const { logger } = require('../utils');
 
-const cotacoesWorker = async (_job, done) => {
-    logger.info('Buscando cotações...');
+const cotacoesWorker = async (job, done) => {
+    try {
+       logger.info(`Buscando cotações... Tentativa ${job.attemptsMade + 1}/${job.opts.attempts}`);
 
     const cotacoes = await buscaCotacoesOnline();
 
@@ -11,7 +12,12 @@ const cotacoesWorker = async (_job, done) => {
 
     await Cotacao.insertMany(cotacoes);
 
-    done();
+    done(); 
+    } catch(err){
+        logger.error(`Erro ao processar o job: ${err.message}`);
+        done(err);
+    };
+    
 }
 
 module.exports = { cotacoesWorker };
