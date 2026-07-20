@@ -1,5 +1,4 @@
-const Cotacao = require('../models');
-const TopMovers = require('../models');
+const {Cotacao, TopMovers} = require('../models');
 
 async function gerarTopMovers() {
 
@@ -28,7 +27,7 @@ async function gerarTopMovers() {
                     $lt: inicioHoje
                 }
             })
-            .sort({ data: -1 });
+            .sort({ data: 1 });
 
         const cotacaoHoje = await Cotacao
             .findOne({
@@ -76,4 +75,4 @@ async function gerarTopMovers() {
     console.log('Top Movers atualizado.');
 }
 
-module.exports = gerarTopMovers;
+module.exports = {gerarTopMovers};

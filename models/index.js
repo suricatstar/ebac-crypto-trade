@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
-const UsuarioSchema = require('./usuario');
+const { UsuarioSchema } = require('./usuario');
 
 const CotacaoSchema = require('./cotacao');
 
 const TopMoversSchema = require('./GainersLoosers');
 
-const Usuario = mongoose.model('Usuario', UsuarioSchema.UsuarioSchema);
+const Usuario = mongoose.model('Usuario', UsuarioSchema);
 const Cotacao = mongoose.model('Cotacao', CotacaoSchema);
 const TopMovers = mongoose.model('TopMovers', TopMoversSchema);
 

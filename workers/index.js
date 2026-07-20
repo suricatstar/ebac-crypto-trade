@@ -1,7 +1,7 @@
 const Queue = require('bull');
 
 const { cotacoesWorker } = require('./cotacoes');
-const { topMoversWorker } = require('./topMoversWorker');
+const { topMoversWorker } = require('./top-gainers-loosers');
 
 
 const cotacoesQueue = new Queue('Busca-cotacoes', process.env.REDIS_URL);
