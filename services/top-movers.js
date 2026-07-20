@@ -27,7 +27,7 @@ async function gerarTopMovers() {
                     $lt: inicioHoje
                 }
             })
-            .sort({ data: 1 });
+            .sort({ data: -1 });
 
         const cotacaoHoje = await Cotacao
             .findOne({
