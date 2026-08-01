@@ -5,6 +5,7 @@ const { cancelaDeposito } = require("./cancela-deposito");
 const { buscaCotacoesOnline } = require("./busca-cotacoes");
 const { buscaCotacoesNoBanco } = require("./busca-cotacoes");
 const { gerarTopMovers } = require("./top-movers");
+const { trocaMoedas } = require("./troca-moedas.js")
 
 module.exports = {
   criaUsuario,
@@ -13,5 +14,6 @@ module.exports = {
   buscaCotacoesOnline,
   buscaCotacoesNoBanco,
   cancelaDeposito,
-  gerarTopMovers
+  gerarTopMovers,
+  trocaMoedas
 };

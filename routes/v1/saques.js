@@ -24,6 +24,10 @@ router.post('/', async(req, res) => {
         };
 
         usuario.saques.push({ valor : valor , data : new Date() });
+
+        const saldoEmMoedas = await UsuarioSchema.moedas.find(m => m.codigo === 'BRL');
+        saldoEmMoedas.quantidade -= valor;
+        
         await usuario.save();
         res.json({ 
             sucesso: true,
