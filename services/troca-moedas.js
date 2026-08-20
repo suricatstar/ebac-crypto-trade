@@ -71,4 +71,4 @@ const trocaMoedas = async(usuario, cotacaoId, quantidade, operacao) => {
 
 
     
-module.exports =  trocaMoedas
+module.exports =  {trocaMoedas}

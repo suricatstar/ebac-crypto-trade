@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
         const valor = req.body.valor;
         usuario.depositos.push({ valor: valor, data: new Date() });
 
-        const saldoEmMoedas = await UsuarioSchema.moedas.find(m => m.codigo === 'BRL');
+        const saldoEmMoedas = await usuario.moedas.find(m => m.codigo === 'BRL');
         if (saldoEmMoedas) {
             saldoEmMoedas.quantidade += valor;
         } else {
