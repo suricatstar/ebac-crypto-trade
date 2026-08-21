@@ -3,15 +3,18 @@ const Queue = require('bull');
 const { cotacoesWorker } = require('./cotacoes');
 const { topMoversWorker } = require('./top-gainers-loosers');
 const { saldoWorker } = require('./saldo');
+const { relatorioWorker } = require('./relatorios');
 
 
 const cotacoesQueue = new Queue('Busca-cotacoes', process.env.REDIS_URL);
 const topMoversQueue = new Queue('Top-Movers', process.env.REDIS_URL);
 const aumentaSaldoQueue = new Queue('Saldo', process.env.REDIS_URL);
+const relatorioQueue = new Queue('Relatorio', process.env.REDIS_URL);
 
 cotacoesQueue.process(cotacoesWorker);
 topMoversQueue.process(topMoversWorker);
 aumentaSaldoQueue.process(saldoWorker);
+relatorioQueue.process(relatorioWorker);
 
 const agendaTarefas = async () => {
     const cotacoesAgendadas = await cotacoesQueue.getRepeatableJobs();
@@ -43,6 +46,14 @@ const agendaTarefas = async () => {
         attempts: 3,
         backoff: 5000
     });
+
+    relatorioQueue.add({},
+        {
+            repeat: { cron: '0 0 * * *' },
+            attempts: 3,
+            backoff: 5000
+        }
+    );
 };
 
 

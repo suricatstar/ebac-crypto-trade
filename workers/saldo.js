@@ -28,4 +28,4 @@ const saldoWorker = async(job,done) => {
 
 };
 
-module.exports = saldoWorker;
+module.exports = {saldoWorker};

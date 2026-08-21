@@ -5,6 +5,7 @@ const { cancelaDeposito } = require("./cancela-deposito");
 const { buscaCotacoesOnline } = require("./busca-cotacoes");
 const { buscaCotacoesNoBanco } = require("./busca-cotacoes");
 const { gerarTopMovers } = require("./top-movers");
+const { gerarPnl } = require('./gerar-pnl');
 const { trocaMoedas } = require("./troca-moedas");
 const { sacaCrypto } = require("./saca-crypto");
 
@@ -17,5 +18,6 @@ module.exports = {
   cancelaDeposito,
   gerarTopMovers,
   trocaMoedas,
-  sacaCrypto
+  sacaCrypto,
+  gerarPnl
 };
