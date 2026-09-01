@@ -5,6 +5,19 @@ const { logger } = require('../../utils');
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /v1/cotacoes:
+ *  get:
+ *    description: Retorna a última cotação de cada válida de cada moeda no nosso sistema
+ *    responses:
+ *      200:
+ *        description: Recebe uma lista de cotações, atente-se ao id de cada cotação que será usado depois na troca de moedas
+ * 
+ *      tags:
+ *        - Operações
+ */
+
 router.get('/', async (_req, res) => {
     try {
         const cotacoes = await buscaCotacoesNoBanco();
