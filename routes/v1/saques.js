@@ -44,6 +44,25 @@ router.post('/', async(req, res) => {
     }
 });
 
+/**
+ * @openapi
+ * /v1/saques/{codigo}:
+ *    post:
+ *      description: Realiza o saque de uma determinada cryptomoeda
+ *      security: 
+ *        - auth: []
+ *      parameters:
+ *          - in: path
+ *            name: codigo
+ *            schema:
+ *              type: string
+ *              example: BTC
+ *            required: true
+ *            description: Código da moeda que você quer sacar
+ *     tags:
+ *      - Operações
+ */
+
 router.post('/:codigo', async(req, res) => {
     const usuario = req.user;
     const codigo = req.params.codigo;
