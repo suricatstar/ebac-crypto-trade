@@ -6,6 +6,43 @@ const { checaSaldo, cancelaDeposito } = require('../../services');
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /v1/depositos:
+ *  get:
+ *    description: Retorna a lista de todos os depósitos realizados pelo usuário autenticado
+ *    security:
+ *      - auth: []
+ *    responses:
+ *      200:
+ *        description: Lista de depósitos do usuário
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: true
+ *                depositos:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      valor:
+ *                        type: number
+ *                        example: 500
+ *                      data:
+ *                        type: string
+ *                        format: date-time
+ *                        example: "2024-01-15T10:30:00.000Z"
+ *                      cancelado:
+ *                        type: boolean
+ *                        example: false
+ *
+ *    tags:
+ *      - Operações
+ */
 router.get('/', (req, res) => {
     res.json({
         sucesso: true,
@@ -13,6 +50,76 @@ router.get('/', (req, res) => {
     });
 });
 
+/**
+ * @openapi
+ * /v1/depositos:
+ *  post:
+ *    description: Deposita um valor em reais (BRL) na conta do usuário autenticado. O valor mínimo é R$ 100,00
+ *    security:
+ *      - auth: []
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - valor
+ *            properties:
+ *              valor:
+ *                type: number
+ *                minimum: 100
+ *                example: 500
+ *                description: Valor em reais a ser depositado (mínimo R$ 100)
+ *    responses:
+ *      200:
+ *        description: Depósito realizado com sucesso
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: true
+ *                mensagem:
+ *                  type: string
+ *                  example: Depósito realizado com sucesso!
+ *                saldo:
+ *                  type: number
+ *                  example: 1500
+ *                depositos:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      valor:
+ *                        type: number
+ *                        example: 500
+ *                      data:
+ *                        type: string
+ *                        format: date-time
+ *                        example: "2024-01-15T10:30:00.000Z"
+ *                      cancelado:
+ *                        type: boolean
+ *                        example: false
+ *      422:
+ *        description: Erro de validação
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: false
+ *                mensagem:
+ *                  type: string
+ *                  example: Valor mínimo de depósito é R$ 100,00.
+ *
+ *    tags:
+ *      - Operações
+ */
 router.post('/', async (req, res) => {
     const usuario = req.user;
 
@@ -45,7 +152,68 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Nova rota para cancelar depósito
+/**
+ * @openapi
+ * /v1/depositos/{depositoId}:
+ *  delete:
+ *    description: Cancela um depósito existente pelo seu ID
+ *    security:
+ *      - auth: []
+ *    parameters:
+ *      - in: path
+ *        name: depositoId
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: "507f1f77bcf86cd799439011"
+ *        description: ID do depósito a ser cancelado
+ *    responses:
+ *      200:
+ *        description: Depósito cancelado com sucesso
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: true
+ *                mensagem:
+ *                  type: string
+ *                  example: Depósito cancelado com sucesso!
+ *                saldo:
+ *                  type: number
+ *                  example: 1000
+ *                deposito:
+ *                  type: object
+ *                  properties:
+ *                    valor:
+ *                      type: number
+ *                      example: 500
+ *                    data:
+ *                      type: string
+ *                      format: date-time
+ *                      example: "2024-01-15T10:30:00.000Z"
+ *                    cancelado:
+ *                      type: boolean
+ *                      example: true
+ *      422:
+ *        description: Depósito não encontrado ou já cancelado
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: false
+ *                mensagem:
+ *                  type: string
+ *                  example: Depósito não encontrado.
+ *
+ *    tags:
+ *      - Operações
+ */
 router.delete('/:depositoId', async (req, res) => {
     const usuario = req.user;
     const { depositoId } = req.params;

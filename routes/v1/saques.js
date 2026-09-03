@@ -5,6 +5,40 @@ const { checaSaldo, sacaCrypto } = require('../../services');
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /v1/saques:
+ *  get:
+ *    description: Retorna a lista de todos os saques realizados pelo usuário autenticado
+ *    security:
+ *      - auth: []
+ *    responses:
+ *      200:
+ *        description: Lista de saques do usuário
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: true
+ *                message:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      valor:
+ *                        type: number
+ *                        example: 200
+ *                      data:
+ *                        type: string
+ *                        format: date-time
+ *                        example: "2024-01-15T10:30:00.000Z"
+ *
+ *    tags:
+ *      - Operações
+ */
 router.get('/', (req, res) => {
     res.json({
         sucesso: true,
@@ -12,6 +46,70 @@ router.get('/', (req, res) => {
     });
 });
 
+/**
+ * @openapi
+ * /v1/saques:
+ *  post:
+ *    description: Realiza o saque de um valor em reais (BRL) da conta do usuário autenticado
+ *    security:
+ *      - auth: []
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - valor
+ *            properties:
+ *              valor:
+ *                type: number
+ *                minimum: 1
+ *                example: 200
+ *                description: Valor em reais a ser sacado (mínimo R$ 1,00)
+ *    responses:
+ *      200:
+ *        description: Saque realizado com sucesso
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: true
+ *                saldo:
+ *                  type: number
+ *                  example: 800
+ *                saques:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      valor:
+ *                        type: number
+ *                        example: 200
+ *                      data:
+ *                        type: string
+ *                        format: date-time
+ *                        example: "2024-01-15T10:30:00.000Z"
+ *      422:
+ *        description: Saldo insuficiente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: Você não possui saldo o suficiente para sacar esse dinheiro.
+ *
+ *    tags:
+ *      - Operações
+ */
 router.post('/', async(req, res) => {
     const usuario = req.user;
 
@@ -47,19 +145,68 @@ router.post('/', async(req, res) => {
 /**
  * @openapi
  * /v1/saques/{codigo}:
- *    post:
- *      description: Realiza o saque de uma determinada cryptomoeda
- *      security: 
- *        - auth: []
- *      parameters:
- *          - in: path
- *            name: codigo
+ *  post:
+ *    description: Realiza o saque de uma determinada cryptomoeda da carteira do usuário autenticado
+ *    security:
+ *      - auth: []
+ *    parameters:
+ *      - in: path
+ *        name: codigo
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: BTC
+ *        description: Código da moeda que você quer sacar (ex.: BTC, ETH)
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - valor
+ *            properties:
+ *              valor:
+ *                type: number
+ *                example: 0.5
+ *                description: Quantidade da moeda a ser sacada
+ *    responses:
+ *      200:
+ *        description: Saque de crypto realizado com sucesso
+ *        content:
+ *          application/json:
  *            schema:
- *              type: string
- *              example: BTC
- *            required: true
- *            description: Código da moeda que você quer sacar
- *     tags:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: true
+ *                moedas:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      codigo:
+ *                        type: string
+ *                        example: BTC
+ *                      quantidade:
+ *                        type: number
+ *                        example: 1.5
+ *      422:
+ *        description: Saldo insuficiente ou moeda inválida
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                sucesso:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: Saldo insuficiente para realizar o saque.
+ *
+ *    tags:
  *      - Operações
  */
 
