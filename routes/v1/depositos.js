@@ -27,18 +27,7 @@ const router = express.Router();
  *                depositos:
  *                  type: array
  *                  items:
- *                    type: object
- *                    properties:
- *                      valor:
- *                        type: number
- *                        example: 500
- *                      data:
- *                        type: string
- *                        format: date-time
- *                        example: "2024-01-15T10:30:00.000Z"
- *                      cancelado:
- *                        type: boolean
- *                        example: false
+ *                    $ref: '#/components/schemas/Deposito'
  *
  *    tags:
  *      - Operações
@@ -62,15 +51,7 @@ router.get('/', (req, res) => {
  *      content:
  *        application/json:
  *          schema:
- *            type: object
- *            required:
- *              - valor
- *            properties:
- *              valor:
- *                type: number
- *                minimum: 100
- *                example: 500
- *                description: Valor em reais a ser depositado (mínimo R$ 100)
+ *            $ref: '#/components/schemas/DepositoRequest'
  *    responses:
  *      200:
  *        description: Depósito realizado com sucesso
@@ -91,31 +72,13 @@ router.get('/', (req, res) => {
  *                depositos:
  *                  type: array
  *                  items:
- *                    type: object
- *                    properties:
- *                      valor:
- *                        type: number
- *                        example: 500
- *                      data:
- *                        type: string
- *                        format: date-time
- *                        example: "2024-01-15T10:30:00.000Z"
- *                      cancelado:
- *                        type: boolean
- *                        example: false
+ *                    $ref: '#/components/schemas/Deposito'
  *      422:
  *        description: Erro de validação
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              properties:
- *                sucesso:
- *                  type: boolean
- *                  example: false
- *                mensagem:
- *                  type: string
- *                  example: Valor mínimo de depósito é R$ 100,00.
+ *              $ref: '#/components/schemas/RespostaErro'
  *
  *    tags:
  *      - Operações
@@ -185,31 +148,13 @@ router.post('/', async (req, res) => {
  *                  type: number
  *                  example: 1000
  *                deposito:
- *                  type: object
- *                  properties:
- *                    valor:
- *                      type: number
- *                      example: 500
- *                    data:
- *                      type: string
- *                      format: date-time
- *                      example: "2024-01-15T10:30:00.000Z"
- *                    cancelado:
- *                      type: boolean
- *                      example: true
+ *                  $ref: '#/components/schemas/Deposito'
  *      422:
  *        description: Depósito não encontrado ou já cancelado
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              properties:
- *                sucesso:
- *                  type: boolean
- *                  example: false
- *                mensagem:
- *                  type: string
- *                  example: Depósito não encontrado.
+ *              $ref: '#/components/schemas/RespostaErro'
  *
  *    tags:
  *      - Operações

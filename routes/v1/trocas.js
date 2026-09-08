@@ -18,27 +18,7 @@ const router = express.Router();
  *      content:
  *        application/json:
  *          schema:
- *            type: object
- *            required:
- *              - cotacaoId
- *              - quantidade
- *              - operacao
- *            properties:
- *              cotacaoId:
- *                type: string
- *                example: "507f1f77bcf86cd799439011"
- *                description: ID da cotação obtido em GET /v1/cotacoes
- *              quantidade:
- *                type: number
- *                example: 0.001
- *                description: Quantidade de crypto a comprar ou vender
- *              operacao:
- *                type: string
- *                enum:
- *                  - compra
- *                  - venda
- *                example: compra
- *                description: Tipo de operação — compra (BRL → crypto) ou venda (crypto → BRL)
+ *            $ref: '#/components/schemas/TrocaRequest'
  *    responses:
  *      200:
  *        description: Troca realizada com sucesso
@@ -53,27 +33,13 @@ const router = express.Router();
  *                moedas:
  *                  type: array
  *                  items:
- *                    type: object
- *                    properties:
- *                      codigo:
- *                        type: string
- *                        example: BTC
- *                      quantidade:
- *                        type: number
- *                        example: 0.001
+ *                    $ref: '#/components/schemas/Moeda'
  *      422:
  *        description: Saldo insuficiente ou cotação inválida
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              properties:
- *                sucesso:
- *                  type: boolean
- *                  example: false
- *                erro:
- *                  type: string
- *                  example: Saldo em BRL insuficiente para a operação.
+ *              $ref: '#/components/schemas/RespostaErro'
  *
  *    tags:
  *      - Operações

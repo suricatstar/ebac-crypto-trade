@@ -26,15 +26,7 @@ const router = express.Router();
  *                message:
  *                  type: array
  *                  items:
- *                    type: object
- *                    properties:
- *                      valor:
- *                        type: number
- *                        example: 200
- *                      data:
- *                        type: string
- *                        format: date-time
- *                        example: "2024-01-15T10:30:00.000Z"
+ *                    $ref: '#/components/schemas/Saque'
  *
  *    tags:
  *      - Operações
@@ -58,15 +50,7 @@ router.get('/', (req, res) => {
  *      content:
  *        application/json:
  *          schema:
- *            type: object
- *            required:
- *              - valor
- *            properties:
- *              valor:
- *                type: number
- *                minimum: 1
- *                example: 200
- *                description: Valor em reais a ser sacado (mínimo R$ 1,00)
+ *            $ref: '#/components/schemas/SaqueRequest'
  *    responses:
  *      200:
  *        description: Saque realizado com sucesso
@@ -84,28 +68,13 @@ router.get('/', (req, res) => {
  *                saques:
  *                  type: array
  *                  items:
- *                    type: object
- *                    properties:
- *                      valor:
- *                        type: number
- *                        example: 200
- *                      data:
- *                        type: string
- *                        format: date-time
- *                        example: "2024-01-15T10:30:00.000Z"
+ *                    $ref: '#/components/schemas/Saque'
  *      422:
  *        description: Saldo insuficiente
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              properties:
- *                sucesso:
- *                  type: boolean
- *                  example: false
- *                message:
- *                  type: string
- *                  example: Você não possui saldo o suficiente para sacar esse dinheiro.
+ *              $ref: '#/components/schemas/RespostaErro'
  *
  *    tags:
  *      - Operações
@@ -162,14 +131,7 @@ router.post('/', async(req, res) => {
  *      content:
  *        application/json:
  *          schema:
- *            type: object
- *            required:
- *              - valor
- *            properties:
- *              valor:
- *                type: number
- *                example: 0.5
- *                description: Quantidade da moeda a ser sacada
+ *            $ref: '#/components/schemas/SaqueCryptoRequest'
  *    responses:
  *      200:
  *        description: Saque de crypto realizado com sucesso
@@ -184,27 +146,13 @@ router.post('/', async(req, res) => {
  *                moedas:
  *                  type: array
  *                  items:
- *                    type: object
- *                    properties:
- *                      codigo:
- *                        type: string
- *                        example: BTC
- *                      quantidade:
- *                        type: number
- *                        example: 1.5
+ *                    $ref: '#/components/schemas/Moeda'
  *      422:
  *        description: Saldo insuficiente ou moeda inválida
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              properties:
- *                sucesso:
- *                  type: boolean
- *                  example: false
- *                message:
- *                  type: string
- *                  example: Saldo insuficiente para realizar o saque.
+ *              $ref: '#/components/schemas/RespostaErro'
  *
  *    tags:
  *      - Operações
