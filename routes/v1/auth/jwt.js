@@ -9,7 +9,10 @@ passport.use(new jwtStrategy({
     secretOrKey: process.env.JWT_SECRET,
 }, async (jwtPayload, done) => {
     try {
-        const usuario = await Usuario.findById(jwtPayload.id);
+        const usuario = await Usuario.findOne({
+            _id: jwtPayload.id,
+            confirmado: true
+        });
        
         done(null, usuario);
     } catch (err) {

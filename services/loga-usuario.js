@@ -10,10 +10,14 @@ const logaUsuario = async (email, senha) => {
         throw new Error('Email e senha são obrigatórios');
     }
 
-    const usuario = await Usuario.findOne({ email: email }).select('senha');
+    const usuario = await Usuario.findOne({ email: email }).select(['senha', 'confirmado']);
 
     if (!usuario) {
         throw new Error('Usuario não encontrado');
+    }
+
+    if (!usuario.confirmado){
+        throw new Error('Usuario não confirmado! Cheque seu email para logar');
     }
 
     if (!await bcrypt.compare(senha, usuario.senha)){

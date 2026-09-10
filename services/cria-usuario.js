@@ -1,7 +1,8 @@
 const { Usuario } = require('../models');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
-const criaUsuario = async(usuario) => {
+const criaUsuario = async(usuario, urlDeRedirecionamento) => {
     if(!usuario.senha){
         throw new Error('Senha é obrigatória');
     }
@@ -12,6 +13,8 @@ const criaUsuario = async(usuario) => {
     const hashSenha = await bcrypt.hash(usuario.senha, 10);
    
     usuario.senha = hashSenha;
+
+    usuario.tokenDeConfirmacao = crypto.randomBytes(32).toString('hex');
 
     const { senha, ...usuarioSalvo } = (await Usuario.create(usuario))._doc;
 
