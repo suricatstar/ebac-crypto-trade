@@ -1,0 +1,9 @@
+🎉 Parabéns, <%= nome %>!
+
+Você teve um lucro de R$ <%= lucro %> no dia de ontem nas suas operações de trade na CryptoTrade!
+
+Continue operando e bons trades! 🚀
+
+— Equipe CryptoTrade
+
+Esta é uma mensagem automática. Não responda este e-mail.

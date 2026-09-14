@@ -1,6 +1,6 @@
 const express = require('express');
 const { logger } = require('../../utils');
-const { logaUsuario, confirmaConta, enviaEmailDeConfirmacao } = require('../../services');
+const { logaUsuario, confirmaConta, enviaEmailDeRecuperacao, validaTokenAlteracaoDeSenha } = require('../../services');
 
 const router = express.Router();
 
@@ -94,6 +94,23 @@ router.get('/pede-recuperacao', async(req,res) =>{
         res.status(422).json({
             sucesso: false,
             mensagem: e.message,
+        });
+    }
+});
+
+router.get('/valida-token', async(req, res) => {
+    try {
+        const { token, redirect } = req.query;
+
+        const jwt = await validaTokenAlteracaoDeSenha(token);
+
+        res.redirect(`${redirect}/?token=${jwt}`);
+
+    } catch (e) {
+        logger.error(`Erro ao validar token de recuperação de senha: ${e.message}`);
+        res.status(422).json({
+            sucesso: false,
+            erro: e.message,
         });
     }
 });

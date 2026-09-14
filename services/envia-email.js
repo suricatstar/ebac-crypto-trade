@@ -60,4 +60,22 @@ const enviaEmailDeRecuperacao = async (email, urlDeRedirecionamento) => {
 
 };
 
-module.exports = { enviaEmailDeConfirmacao, enviaEmailDeRecuperacao };
+const enviaEmailDeParabenizacao = async (usuario, lucro) => {
+    const parametros = {
+        nome: usuario.nome,
+        lucro: lucro.toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })
+    };
+
+    await transporter.sendMail({
+        from: '"CryptoTrade" <noreply@cryptotrade.com.br>',
+        to: usuario.email,
+        subject: '🎉 Parabéns! Você lucrou mais de R$1.000,00 hoje!',
+        text: await ejs.renderFile('emails/parabenizacao/template.txt', parametros),
+        html: await ejs.renderFile('emails/parabenizacao/template.html', parametros),
+    });
+};
+
+module.exports = { enviaEmailDeConfirmacao, enviaEmailDeRecuperacao, enviaEmailDeParabenizacao };

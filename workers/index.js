@@ -4,17 +4,23 @@ const { cotacoesWorker } = require('./cotacoes');
 const { topMoversWorker } = require('./top-gainers-loosers');
 const { saldoWorker } = require('./saldo');
 const { relatorioWorker } = require('./relatorios');
+const { parabenizacaoWorker } = require('./parabenizacao');
+
 
 
 const cotacoesQueue = new Queue('Busca-cotacoes', process.env.REDIS_URL);
 const topMoversQueue = new Queue('Top-Movers', process.env.REDIS_URL);
 const aumentaSaldoQueue = new Queue('Saldo', process.env.REDIS_URL);
 const relatorioQueue = new Queue('Relatorio', process.env.REDIS_URL);
+const parabenizacaoQueue = new Queue('Parabenizacao', process.env.REDIS_URL);
+
 
 cotacoesQueue.process(cotacoesWorker);
 topMoversQueue.process(topMoversWorker);
 aumentaSaldoQueue.process(saldoWorker);
 relatorioQueue.process(relatorioWorker);
+parabenizacaoQueue.process(parabenizacaoWorker);
+
 
 const agendaTarefas = async () => {
     const cotacoesAgendadas = await cotacoesQueue.getRepeatableJobs();
@@ -54,6 +60,18 @@ const agendaTarefas = async () => {
             backoff: 5000
         }
     );
+
+    const parabenizacoesAgendadas = await parabenizacaoQueue.getRepeatableJobs();
+    for (const job of parabenizacoesAgendadas) {
+        await parabenizacaoQueue.removeRepeatableByKey(job.key);
+    }
+
+    parabenizacaoQueue.add({}, {
+        repeat: { cron: '0 8 * * *' }, // Todo dia às 08:00
+        attempts: 3,
+        backoff: 5000
+    });
+
 };
 
 

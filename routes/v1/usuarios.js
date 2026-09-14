@@ -2,7 +2,10 @@ const express = require('express');
 
 const passport = require('passport');
 
+const bcrypt = require('bcrypt');
+
 const { logger } = require('../../utils');
+
 
 const { criaUsuario, checaSaldo } = require('../../services/index');
 
@@ -35,6 +38,29 @@ router.post('/', async  (req, res) => {
         })
     }
 })
+
+router.put('/senha', 
+    passport.authenticate('jwt', {session: false}),
+    async(req, res) => {
+    const { senha } = req.body
+    try {
+        const usuario = req.user;
+        usuario.senha = await bcrypt.hash(senha, 10);
+        await usuario.save();
+
+        res.status(200).json({
+            sucesso: true,
+            mensagem: 'Senha alterada com sucesso',
+        })
+
+    } catch (e) {
+        logger.error(`Erro ao alterar senha: ${e.message}`);
+        res.status(422).json({
+            sucesso: false,
+            erro: e.message,
+        });
+    }
+});
 
 /**
  * @openapi

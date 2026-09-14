@@ -11,6 +11,10 @@ const { sacaCrypto } = require("./saca-crypto");
 const { enviaEmailDeConfirmacao } = require('./envia-email');
 const { confirmaConta } = require('./confirma-conta');
 const { enviaEmailDeRecuperacao } = require('./envia-email');
+const { validaTokenAlteracaoDeSenha } = require('./valida-token-senha.js');
+const { verificaLucro } = require('./verifica-lucro');
+const { enviaEmailDeParabenizacao } = require('./envia-email');
+
 
 module.exports = {
   criaUsuario,
@@ -26,4 +30,7 @@ module.exports = {
   enviaEmailDeConfirmacao,
   confirmaConta,
   enviaEmailDeRecuperacao,
+  validaTokenAlteracaoDeSenha,
+  verificaLucro,
+  enviaEmailDeParabenizacao,
 };
