@@ -72,7 +72,7 @@ const enviaEmailDeParabenizacao = async (usuario, lucro) => {
     await transporter.sendMail({
         from: '"CryptoTrade" <noreply@cryptotrade.com.br>',
         to: usuario.email,
-        subject: '🎉 Parabéns! Você lucrou mais de R$1.000,00 hoje!',
+        subject: '🎉 Parabéns! Você lucrou mais de R$1.000,00 ontem!',
         text: await ejs.renderFile('emails/parabenizacao/template.txt', parametros),
         html: await ejs.renderFile('emails/parabenizacao/template.html', parametros),
     });

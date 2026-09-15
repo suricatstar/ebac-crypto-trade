@@ -2,14 +2,22 @@ const { Relatorio } = require('../models');
 
 const gerarPnl = async (usuario) => {
 
-    const ontem = new Date();
-    ontem.setDate(ontem.getDate() - 1);
+    const agora = new Date();
+
+    // Início de ontem às 00:00:00.000 — garante que o relatório das 00h de ontem
+    // seja sempre incluído, independentemente do horário em que a função for chamada
+    const inicioDeOntem = new Date(
+        agora.getFullYear(),
+        agora.getMonth(),
+        agora.getDate() - 1,
+        0, 0, 0, 0
+    );
 
     const relatorios = await Relatorio.aggregate([
         {
             $match:{
                 usuarioId: usuario._id,
-                data: {$gte: ontem}
+                data: { $gte: inicioDeOntem }
             }
         },
         { $sort: { data: -1 }}
