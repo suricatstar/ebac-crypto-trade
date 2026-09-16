@@ -14,7 +14,7 @@ const { enviaEmailDeRecuperacao } = require('./envia-email');
 const { validaTokenAlteracaoDeSenha } = require('./valida-token-senha.js');
 const { verificaLucro } = require('./verifica-lucro');
 const { enviaEmailDeParabenizacao } = require('./envia-email');
-
+const { gerarSegredo, validarOtp } = require('./otp');
 
 module.exports = {
   criaUsuario,
@@ -33,4 +33,6 @@ module.exports = {
   validaTokenAlteracaoDeSenha,
   verificaLucro,
   enviaEmailDeParabenizacao,
+  gerarSegredo,
+  validarOtp
 };
