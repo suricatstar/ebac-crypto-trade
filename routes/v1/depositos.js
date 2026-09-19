@@ -3,6 +3,7 @@ const express = require('express');
 const { logger } = require('../../utils');
 
 const { checaSaldo, cancelaDeposito } = require('../../services');
+const { checaOtp } = require('../auth/otp');
 
 const router = express.Router();
 
@@ -46,6 +47,7 @@ router.get('/', (req, res) => {
  *    description: Deposita um valor em reais (BRL) na conta do usuário autenticado. O valor mínimo é R$ 100,00
  *    security:
  *      - auth: []
+ *        otp: []
  *    requestBody:
  *      required: true
  *      content:
@@ -83,7 +85,7 @@ router.get('/', (req, res) => {
  *    tags:
  *      - Operações
  */
-router.post('/', async (req, res) => {
+router.post('/', checaOtp, async (req, res) => {
     const usuario = req.user;
 
     try {
