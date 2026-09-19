@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const { logger } = require('../../utils');
 
 
-const { criaUsuario, checaSaldo } = require('../../services/index');
+const { criaUsuario, checaSaldo, gerarSegredo } = require('../../services/index');
 
 const router = express.Router();
 
@@ -60,6 +60,55 @@ router.put('/senha',
             erro: e.message,
         });
     }
+});
+
+/**
+ * @openapi
+ * /v1/usuarios/otp:
+ *  post:
+ *    description: Gera um segredo TOTP para o usuário autenticado, essa rota irá associar um novo OTP ao usuário!
+ *    security: 
+ *      - auth: []
+ *    responses:
+ *      200:
+ *        description: Gera um novo OTP qrcode para o usuário autenticado!
+ *        content: 
+ *          image/svg+xml:
+ *            schema:
+ *              type: string
+ *              example: <svg>...</svg>
+ *      401:
+ *          description: autorização está faltando ou está invalida
+ * 
+ *      tags:
+ *        - autenticacao
+ */
+
+router.post('/otp', passport.authenticate('jwt', {session: false}), 
+    async(req, res) => {
+
+        const usuario = req.user;
+
+        try{
+            const { segredo, qrcode } = gerarSegredo(usuario.email);
+
+            usuario.segredoOtp = segredo;
+
+            await usuario.save();
+
+            return res.send(qrcode);
+            
+        }
+        catch(e){
+            logger.error(`Erro na geração do segredo TOTP ${e.message}`);
+
+            res.status(500).json({
+                sucesso: false,
+                erro: e.message,
+            });
+            
+        }
+
 });
 
 /**
