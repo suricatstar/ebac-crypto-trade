@@ -3,7 +3,7 @@ const express = require('express');
 const { logger } = require('../../utils');
 
 const { checaSaldo, cancelaDeposito } = require('../../services');
-const { checaOtp } = require('../auth/otp');
+const { checaOtp } = require('./auth/otp');
 
 const router = express.Router();
 
@@ -47,7 +47,7 @@ router.get('/', (req, res) => {
  *    description: Deposita um valor em reais (BRL) na conta do usuário autenticado. O valor mínimo é R$ 100,00
  *    security:
  *      - auth: []
- *        otp: []
+ *      - otp: []
  *    requestBody:
  *      required: true
  *      content:
@@ -75,6 +75,12 @@ router.get('/', (req, res) => {
  *                  type: array
  *                  items:
  *                    $ref: '#/components/schemas/Deposito'
+ *      401:
+ *        description: OTP inválido, ausente ou não configurado
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/RespostaErro'
  *      422:
  *        description: Erro de validação
  *        content:

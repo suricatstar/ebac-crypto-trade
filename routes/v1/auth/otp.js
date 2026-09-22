@@ -2,7 +2,7 @@ const { Usuario } = require('../../../models');
 const { validarOtp } = require('../../../services');
 
 const checaOtp = async(req, res, next) => {
-    if(req.isAuthenticate()){
+    if(req.user){
         const usuarioId = req.user._id;
     
         const usuario = await Usuario.findById(usuarioId).select('segredoOtp');

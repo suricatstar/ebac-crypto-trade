@@ -17,11 +17,11 @@ const swaggerBase = {
         bearerFormat: "JWT",
         description: "Insira seu JWT token aqui",
       },
-      otp:{
-       type: 'apiKey',
-       ìn: 'header',
-       name: 'totp'
-       
+      otp: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'totp',
+        description: 'Insira o código TOTP de 6 dígitos gerado pelo seu autenticador'
       }
     },
     schemas: {

@@ -10,7 +10,7 @@ const gerarSegredo = (email) => {
         segredo
     );
 
-    const imagem = qrcode.imageSync(optauth, { type: svg });
+    const imagem = qrcode.imageSync(optauth, { type: 'svg' });
 
     return {
         segredo,

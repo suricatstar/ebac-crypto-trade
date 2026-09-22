@@ -2,7 +2,7 @@ const express = require('express');
 const { logger } = require('../../utils');
 
 const { checaSaldo, sacaCrypto } = require('../../services');
-const { checaOtp } = require('../auth/otp');
+const { checaOtp } = require('./auth/otp');
 
 const router = express.Router();
 
@@ -46,7 +46,7 @@ router.get('/', (req, res) => {
  *    description: Realiza o saque de um valor em reais (BRL) da conta do usuário autenticado
  *    security:
  *      - auth: []
- *        otp: []
+ *      - otp: []
  *    requestBody:
  *      required: true
  *      content:
@@ -126,10 +126,10 @@ router.post('/', checaOtp, async(req, res) => {
  *      - in: path
  *        name: codigo
  *        required: true
+ *        description: "Código da moeda que você quer sacar (ex.: BTC, ETH)"
  *        schema:
  *          type: string
  *          example: BTC
- *        description: Código da moeda que você quer sacar (ex.: BTC, ETH)
  *    requestBody:
  *      required: true
  *      content:

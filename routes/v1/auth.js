@@ -31,7 +31,7 @@ const router = express.Router();
  *      - Autenticação
  */
 
-router.get('/', async(req, res) => {
+router.post('/', async(req, res) => {
     try {
         const { email, senha } = req.body;
 
