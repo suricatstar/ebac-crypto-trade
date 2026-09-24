@@ -64,6 +64,6 @@ describe('quando as informações passadas são válidas', () => {
     test('ele chama corretamente o email de confirmação', () => {
         expect(enviaEmailDeConfirmacao.mock.calls.length).toBe(1);
         expect(enviaEmailDeConfirmacao.mock.calls[0][1]).toBe('https://www.google.com.br');
-        expect(enviaEmailDeConfirmacao.mock.calls[0][0]).toBe(usuarioMock.email);
+        expect(enviaEmailDeConfirmacao.mock.calls[0][0].email).toBe(usuarioMock.email);
     });
 });
