@@ -1,6 +1,6 @@
-{
+module.exports = {
     "collectCoverage": true,
-    "rootDir": "./tests/unit",
+    "rootDir": "./tests/integration",
     "setupFilesAfterEnv": [
         "./setup.js"
     ],

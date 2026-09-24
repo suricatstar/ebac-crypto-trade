@@ -64,7 +64,7 @@ router.put('/senha',
 
 /**
  * @openapi
- * /v1/usuarios/otp:
+ * /v1/usuario/otp:
  *  post:
  *    description: Gera um segredo TOTP para o usuário autenticado, essa rota irá associar um novo OTP ao usuário!
  *    security: 

@@ -1,16 +1,12 @@
-require('dotenv').config()
 
 const createError = require('http-errors');
 const express = require('express');
 const passport = require('passport');
 
-const { logger } = require('./utils');
-const { connect } = require('./models');
-const { agendaTarefas } = require('./workers');
+
 const router = require('./routes');
 
-// inicializa tarefas
-agendaTarefas();
+
 
 const app = express();
 
@@ -37,11 +33,6 @@ app.use(function(err, _req, res, _next) {
   });
 });
 
-const porta = 3000;
-app.listen(porta, () => {
-  connect();
 
-  logger.info(`Servidor ouvindo na porta ${porta}`);
-});
 
 module.exports = app;

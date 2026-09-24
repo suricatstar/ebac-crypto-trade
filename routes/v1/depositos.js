@@ -47,7 +47,7 @@ router.get('/', (req, res) => {
  *    description: Deposita um valor em reais (BRL) na conta do usuário autenticado. O valor mínimo é R$ 100,00
  *    security:
  *      - auth: []
- *      - otp: []
+ *        otp: []
  *    requestBody:
  *      required: true
  *      content:
