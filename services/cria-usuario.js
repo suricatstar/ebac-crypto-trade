@@ -5,10 +5,14 @@ const { enviaEmailDeConfirmacao } = require('./envia-email');
 
 const criaUsuario = async(usuario, urlDeRedirecionamento) => {
     if(!usuario.senha){
-        throw new Error('Senha é obrigatória');
+        throw new Error('O campo senha é obrigatório');
     }
     if(usuario.senha.length < 6){
         throw new Error('Senha deve ter no mínimo 6 caracteres');
+    }
+
+    if(!urlDeRedirecionamento){
+        throw new Error('A Url de redirecionamento é obrigatória');
     }
 
     const hashSenha = await bcrypt.hash(usuario.senha, 10);

@@ -1,3 +1,7 @@
 {
-    "collectCoverage": true
+    "collectCoverage": true,
+    "rootDir": "./tests/unit",
+    "setupFilesAfterEnv": [
+        "./setup.js"
+    ]
 }
