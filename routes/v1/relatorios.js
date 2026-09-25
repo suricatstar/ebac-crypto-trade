@@ -5,7 +5,7 @@ const { logger } = require('../../utils');
 
 const router = express.Router();
 
-router.get('pnl', async(req, res) => {
+router.get('/pnl', async(req, res) => {
     try{
         const pnl = await gerarPnl(req.user);
 

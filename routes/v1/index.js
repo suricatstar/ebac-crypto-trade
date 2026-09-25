@@ -13,6 +13,7 @@ const saquesRouter = require('./saques');
 const cotacoesRouter = require('./cotacoes');
 const trocasRouter = require('./trocas');
 const topClientsRouter = require('./top-clients');
+const relatoriosRouter = require('./relatorios');
 
 
 const router = express.Router();
@@ -27,5 +28,7 @@ router.use('/saques', passport.authenticate('jwt', { session: false }), saquesRo
 router.use('/top-clients', topClientsRouter);
 router.use('/docs', swaggerUi.serve);
 router.use('/docs',swaggerUi.setup(swaggerConfig));
+router.use('/relatorios', passport.authenticate('jwt', { session: false }), relatoriosRouter);
+
 
 module.exports = router;

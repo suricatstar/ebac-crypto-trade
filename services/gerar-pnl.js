@@ -3,6 +3,9 @@ const { Relatorio } = require('../models');
 const gerarPnl = async (usuario) => {
 
     const agora = new Date();
+    const ontem = new Date();
+    ontem.setDate(agora.getDate() - 1);
+    ontem.setUTCHours(0, 0, 0, 0);
 
     // Início de ontem às 00:00:00.000 — garante que o relatório das 00h de ontem
     // seja sempre incluído, independentemente do horário em que a função for chamada
