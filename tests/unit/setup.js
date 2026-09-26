@@ -1,5 +1,10 @@
+const path = require('path');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+
+require('dotenv').config({
+    path: path.resolve(process.cwd(), '.env.test')
+});
 
 let mongo = undefined;
 
