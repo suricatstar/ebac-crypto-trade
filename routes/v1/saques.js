@@ -1,7 +1,7 @@
 const express = require('express');
 const { logger } = require('../../utils');
 
-const { checaSaldo, sacaCrypto } = require('../../services');
+const { checaSaldo, sacaCrypto, sacaBrl } = require('../../services');
 const { checaOtp } = require('./auth/otp');
 
 const router = express.Router();
@@ -88,22 +88,12 @@ router.post('/', checaOtp, async(req, res) => {
 
     try {
         const valor = req.body.valor;
-        const saldo = await checaSaldo(usuario);
+        const resultado = await sacaBrl(usuario, valor);
 
-        if (saldo < valor) {
-            throw new Error('Você não possui saldo o suficiente para sacar esse dinheiro.');
-        };
-
-        usuario.saques.push({ valor : valor , data : new Date() });
-
-        const saldoEmMoedas = await UsuarioSchema.moedas.find(m => m.codigo === 'BRL');
-        saldoEmMoedas.quantidade -= valor;
-        
-        await usuario.save();
         res.json({ 
             sucesso: true,
-            saldo: saldo - valor,
-            saques: usuario.saques,
+            saldo: resultado.saldo,
+            saques: resultado.saques,
         });
     } catch (e) {
         logger.error(`Erro ao processar saque: ${e}`);

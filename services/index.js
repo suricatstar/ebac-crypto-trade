@@ -8,6 +8,7 @@ const { gerarTopMovers } = require("./top-movers");
 const { gerarPnl } = require('./gerar-pnl');
 const { trocaMoedas } = require("./troca-moedas");
 const { sacaCrypto } = require("./saca-crypto");
+const { sacaBrl } = require("./saca-brl");
 const { enviaEmailDeConfirmacao } = require('./envia-email');
 const { confirmaConta } = require('./confirma-conta');
 const { enviaEmailDeRecuperacao } = require('./envia-email');
@@ -26,6 +27,7 @@ module.exports = {
   gerarTopMovers,
   trocaMoedas,
   sacaCrypto,
+  sacaBrl,
   gerarPnl,
   enviaEmailDeConfirmacao,
   confirmaConta,
