@@ -3,11 +3,22 @@ const ejs = require('ejs');
 const jsonWebToken = require('jsonwebtoken');
 const { Usuario } = require('../models');
 
-const transporter = nodemailer.createTransport({
+const emailDe = process.env.EMAIL_DE || 'noreply@cryptotrade.com.br';
+
+const opcoes = {
     host: process.env.EMAIL_HOST,
     port: parseInt(process.env.EMAIL_PORT),
-    secure: false
-});
+    secure:false
+}
+
+if(process.env.EMAIL_PASSWORD){
+    opcoes.auth = {
+        user: 'apikey',
+        pass: process.env.EMAIL_PASSWORD
+    }
+}
+
+const transporter = nodemailer.createTransport(opcoes);
 
 const enviaEmailDeConfirmacao = async (usuario, urlDeRedirecionamento) => {
     const parametros = {
@@ -16,7 +27,7 @@ const enviaEmailDeConfirmacao = async (usuario, urlDeRedirecionamento) => {
     };
 
     await transporter.sendMail({
-        from:'"CryptoTrade" <noreply@cryptotrade.com.br>',
+        from:`"CryptoTrade" <${emailDe}>`,
         to: usuario.email,
         subject: 'Confirmação de conta!',
         text: await ejs.renderFile('emails/confirmação/template.txt', parametros),
@@ -50,7 +61,7 @@ const enviaEmailDeRecuperacao = async (email, urlDeRedirecionamento) => {
         }
 
         await transporter.sendMail({
-            from: '"CryptoTrade" <noreply@cryptotrade.com.br>',
+            from:`"CryptoTrade" <${emailDe}>`,
             to: usuario.email,
             subject: 'pedido de recuperação de senha',
             text: await ejs.renderFile('emails/recuperacao-de-senha/template.txt', parametros),
